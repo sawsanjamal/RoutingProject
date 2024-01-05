@@ -8,7 +8,9 @@ export function Skeleton({ short }) {
     ></div>
   );
 }
-
+export function SkeletonButton({ short }) {
+  return <div className="skeleton skeleton-btn"></div>;
+}
 export function SkeletonList({ amount, children }) {
   return (
     <>
