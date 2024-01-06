@@ -15,6 +15,9 @@ export function Skeleton({ short, inline }) {
 export function SkeletonButton({ short }) {
   return <div className="skeleton skeleton-btn"></div>;
 }
+export function SkeletonInput() {
+  return <div className="skeleton skeleton-input"></div>;
+}
 export function SkeletonList({ amount, children }) {
   return (
     <>

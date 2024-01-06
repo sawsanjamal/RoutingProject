@@ -1,12 +1,12 @@
-import { describe, expect, it } from "vitest";
+import { describe, it, expect } from "vitest";
+import { screen, waitFor } from "@testing-library/react";
 import { renderRoute } from "../../test-setup/renderRoute";
-import { HttpResponse } from "msw";
 import { addMockApiRouteHandler } from "../../test-setup/mockServer";
-import { screen } from "@testing-library/react";
-import { userEvent } from "@testing-library/user-event";
+import { HttpResponse } from "msw";
+import userEvent from "@testing-library/user-event";
 
 describe("PostList page", () => {
-  it("properly filters the post list based on filter input", async () => {
+  it("properly filters the post list based on filter inputs", async () => {
     const user = userEvent.setup();
     addMockApiRouteHandler("get", "/posts", ({ request }) => {
       const posts = [
@@ -48,6 +48,7 @@ describe("PostList page", () => {
         },
       ]);
     });
+
     renderRoute("/posts");
 
     expect(await screen.findByText("first post")).toBeInTheDocument();
@@ -58,6 +59,9 @@ describe("PostList page", () => {
     await user.type(queryInput, "first");
     await user.click(filterBtn);
 
+    await waitFor(() =>
+      expect(screen.queryByText("Loading...")).not.toBeInTheDocument()
+    );
     expect(screen.getByText("first post")).toBeInTheDocument();
     expect(screen.queryByText("second post")).not.toBeInTheDocument();
     expect(queryInput).toHaveValue("first");
@@ -67,6 +71,9 @@ describe("PostList page", () => {
     await user.clear(queryInput);
     await user.click(filterBtn);
 
+    await waitFor(() =>
+      expect(screen.queryByText("Loading...")).not.toBeInTheDocument()
+    );
     expect(screen.queryByText("first post")).not.toBeInTheDocument();
     expect(screen.getByText("second post")).toBeInTheDocument();
     expect(userInput).toHaveValue("2");

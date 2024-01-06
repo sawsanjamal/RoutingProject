@@ -89,7 +89,7 @@ async function loader({ request: { signal }, params: { userId } }) {
   const todos = getTodos({ signal, params: { userId } });
   const user = getUser(userId, { signal });
 
-  return { postsPromise: posts, todosPromise: todos, userPromise: user };
+  return defer({ postsPromise: posts, todosPromise: todos, userPromise: user });
 }
 
 export const userRoute = {
